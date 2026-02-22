@@ -53,6 +53,8 @@ Transcribing:
 
 `transcribe.sh "path/to/file.amr"`
 
+(I've made a link to this script in my path so I can run it from anywhere, but you can also just run it from the local folder with `./transcribe.sh`.)
+
 Verifying output:
 
 - Opening in VLC - "wslview path/to/file.amr"
@@ -63,6 +65,5 @@ Remove the amr when happy.
 
 ## Thoughts
 
-- Can I use JQ to unwrap the output from the server and just get the text content? That would be ideal for the transcribe script?
 - Can I prompt it somehow to output markdown, and add line endings after sentences? That would be ideal for the transcribe script as well.
 
