@@ -5,6 +5,8 @@ Intent: A set of docker compose targets to run a local whisper text to speech se
 Requirement: NVidia card with CUDA, and the NVidia docker runtime installed. Docker compose. WSL.
 
 Inspiration: https://github.com/nikdanilov/whisper-obsidian-plugin/pull/82/changes, 
+And then: https://speaches.ai/installation/ + https://github.com/speaches-ai/speaches/blob/master/compose.yaml
+
 
 ## Usage
 
@@ -25,3 +27,42 @@ Notes:
 <!-- - Only tested on Windows 11. -->
 - Use `whisper-local-cpu.yaml` if you do not have an NVIDIA GPU with CUDA support.
 - The first run will download the model; the Hugging Face cache is persisted in the `hf_hub_cache` volume.
+
+## Testing notes:
+
+- 2026-02-22 12:41:19,259:INFO:faster_whisper_server.routers.stt:handle_default_openai_model:whisper-1 is not a valid model name. Using Systran/faster-whisper-large-v3 instead.
+
+So it's downloading a model. That might be too large?
+
+What about - Systran/faster-whisper-medium.en
+https://huggingface.co/Systran/faster-whisper-medium.en
+
+## Setting up models 
+
+See https://speaches.ai/usage/model-discovery/.
+
+- `uvx speaches-cli model download  Systran/faster-whisper-medium.en`
+
+## Workflow
+
+Finding amr files:
+
+`find . -type f -name "*.amr" -print0`
+
+Transcribing:
+
+`transcribe.sh "path/to/file.amr"`
+
+Verifying output:
+
+- Opening in VLC - "wslview path/to/file.amr"
+- Opening the output file "code path/to/file.md"
+
+Make edits, make it more "markdown". Split the lines.
+Remove the amr when happy.
+
+## Thoughts
+
+- Can I use JQ to unwrap the output from the server and just get the text content? That would be ideal for the transcribe script?
+- Can I prompt it somehow to output markdown, and add line endings after sentences? That would be ideal for the transcribe script as well.
+

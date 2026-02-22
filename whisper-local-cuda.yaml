@@ -1,27 +1,43 @@
 services:
-  whisper:
-    image: fedirz/faster-whisper-server:latest-cuda
+  speaches:
+    image: ghcr.io/speaches-ai/speaches:latest-cuda
     container_name: whisper-local
     ports:
-      - "8087:8087"
+      - "8087:8000"
     gpus: all
     restart: unless-stopped
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 
     environment:
       # CORS: Obsidian typically uses origin "app://obsidian.md"
       # (JSON list as a string!)
       ALLOW_ORIGINS: '["app://obsidian.md"]' # alternatively for testing: '["*"]'
 
-      # Optional: set a default model when the request does not specify one
-      # WHISPER__MODEL: "your-hf-model-id"
+      # # Optional: set a default model when the request does not specify one
+      # # WHISPER__MODEL: "your-hf-model-id"
 
-      # Default device/compute (CUDA)
-      WHISPER__INFERENCE_DEVICE: "cuda" # options: "auto" (default), "cuda", "cpu"
-      WHISPER__COMPUTE_TYPE: "float16" # options include: "default", "float16", "float32", "int8", "int8_float16", "int8_float32", "int8_bfloat16", "int16", "bfloat16"
+      # # Default device/compute (CUDA)
+      # WHISPER__INFERENCE_DEVICE: "cuda" # options: "auto" (default), "cuda", "cpu"
+      # WHISPER__COMPUTE_TYPE: "float16" # options include: "default", "float16", "float32", "int8", "int8_float16", "int8_float32", "int8_bfloat16", "int16", "bfloat16"
 
     volumes:
       # Persistent HF cache as a named volume (works on Windows/macOS/Linux)
-      - hf_hub_cache:/root/.cache/huggingface
+      - hf_hub_cache:/home/ubuntu/.cache/huggingface/hub
+      - ./model_aliases.json:/home/ubuntu/speaches/model_aliases.json
+
+    healthcheck:
+        test: ["CMD", "curl", "--fail", "http://0.0.0.0:8087/health"] # TODO: won't work if a user changes the port
+        interval: 30s
+        timeout: 10s
+        retries: 3
+        start_period: 5s
 
 volumes:
   hf_hub_cache:

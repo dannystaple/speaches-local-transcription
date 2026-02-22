@@ -1,0 +1,4 @@
+{
+    "tts-1": "Systran/faster-distil-whisper-small.en",
+    "whisper-1": "Systran/faster-whisper-medium.en"
+}

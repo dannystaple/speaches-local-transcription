@@ -1,9 +1,9 @@
 services:
   whisper:
-    image: fedirz/faster-whisper-server:latest
+    image: ghcr.io/speaches-ai/speaches:latest
     container_name: whisper-local
     ports:
-      - "8087:8087"
+      - "8087:8000"
     restart: unless-stopped
 
     environment:
