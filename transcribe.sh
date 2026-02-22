@@ -20,5 +20,11 @@ echo
         -F "response_format=text" \
         -F "file=@$input_filename" | \
         perl -0777 -pe 's/\r\n?/\n/g; s/[ \t]+/ /g; s/\n+/ /g; s/\s*([.!?])\s+/$1\n/g; s/\s+$//;'
+        # Read the input buffer as a single string (not line by line)
+        # Normalise newlines to \n
+        # Collapse multiple spaces/tabs into a single space
+        # Collapse multiple newlines into a single space (we will re-insert newlines after punctuation)
+        # Add a newline after sentence-ending punctuation (.!?)
+        # Trim trailing whitespace
     echo ""
 } | tee "$output_filename"
