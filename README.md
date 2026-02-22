@@ -16,10 +16,10 @@ And then: https://speaches.ai/installation/ + https://github.com/speaches-ai/spe
     - Or just download the appropriate compose file and run the same command from any folder.
     - Both files expose the server on http://localhost:8087.
 
-2. Configure the plugin settings:
-   - API URL: `http://localhost:8000/v1/audio/transcriptions`
+2. Configure the plugin settings for usage in Obsidian:
+   - API URL: `http://localhost:8087/v1/audio/transcriptions`
    - API Key: use any placeholder value like 'local' (the local server does not require a real key).
-   - Model: use a Hugging Face model ID that the server can download (i.e., a faster-whisper/CTranslate2-compatible model).
+   - Model: use a Hugging Face model ID that the server can download (i.e., a faster-whisper/CTranslate2-compatible model). I'm using Systran/faster-whisper-medium.en
 3. Record audio as usual. Transcription stays local.
 
 Notes:
@@ -43,11 +43,13 @@ See https://speaches.ai/usage/model-discovery/.
 
 - `uvx speaches-cli model download  Systran/faster-whisper-medium.en`
 
-## Workflow
+## Workflow for transcribing local audio files
+
+(Using wsl)
 
 Finding amr files:
 
-`find . -type f -name "*.amr" -print0`
+`find . -type f -name "*.amr"`
 
 Transcribing:
 
@@ -62,8 +64,3 @@ Verifying output:
 
 Make edits, make it more "markdown". Split the lines.
 Remove the amr when happy.
-
-## Thoughts
-
-- Can I prompt it somehow to output markdown, and add line endings after sentences? That would be ideal for the transcribe script as well.
-
