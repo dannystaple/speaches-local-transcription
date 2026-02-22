@@ -8,4 +8,8 @@ echo "Input file information $(ls -lh "$input_filename")"
 
 curl -s "$SPEACHES_BASE_URL/v1/audio/transcriptions" \
     -F model="$TRANSCRIPTION_MODEL_ID" -F "file=@$input_filename" | \
-    tee "$output_filename"
+    if command -v jq >/dev/null 2>&1; then
+        jq -r '.text'
+    else
+        cat
+    fi | tee "$output_filename"
